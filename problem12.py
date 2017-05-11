@@ -1,41 +1,23 @@
-
-
-import operator
-from functools import reduce
-# A slightly efficient superset of primes.
-def PrimesPlus():
-  yield 2
-  yield 3
-  i = 5
-  while True:
-    yield i
-    if i % 6 == 1:
-      i += 2
-    i += 2
-# Returns a dict d with n = product p ^ d[p]
-def GetPrimeDecomp(n):
-  d = {}
-  primes = PrimesPlus()
-  for p in primes:
-    while n % p == 0:
-      n /= p
-      d[p] = d.setdefault(p, 0) + 1
+def triangle_numbers(n):
     if n == 1:
-      return d
-def NumberOfDivisors(n):
-  d = GetPrimeDecomp(n)
-  powers_plus = map(lambda x: x+1, d.values())
-  return reduce(operator.mul, powers_plus, 1)
+        return 1
+    else:
+        return n+triangle_numbers(n-1)
 
-def return_nth_triangle_number(pos):
-    return sum([x for x in range(1,pos+1)])
+def return_dividers(n):
+    list = []
+    for i in range(1,n+1):
+        if n % i == 0:
+            list.append(i)
+    return list
 
 i = 1
 while True:
-    if NumberOfDivisors(return_nth_triangle_number(i)) >= 500:
-        print(return_nth_triangle_number(i), " - ", NumberOfDivisors(return_nth_triangle_number(i)))
+    number = triangle_numbers(i)
+    divs = return_dividers(number)
+    if len(divs) >= 500:
+        print(number)
+        print(divs)
         break
 
-    else:
-        # print(return_nth_triangle_number(i), " - ", NumberOfDivisors(return_nth_triangle_number(i)))
-        i += 1
+    i+=1

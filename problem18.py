@@ -1,29 +1,32 @@
-file_name = "problem18.txt"
-
+file_name = "problem18-numbers.txt"
 f = open(file_name, 'r')
 
-read_table = []
+lines = {}
+line_nr = 0
 for line in f:
-    read_table.append(line.rstrip().split(' '))
-
-new_table = []
-
-for item in read_table:
-    new_table.append([int(x) for x in item])
-
-print(new_table)
-
-sums = []
-for item in new_table:
-    if new_table.index(item) >= 1:
-        maxx = len(item)
-        for number in item:
-            index = int(item.index(number))
-            prev_index = int(new_table.index(item))-1
-            if index == 0:
-                # print("{}+{}".format(number,new_table[prev_index][index]))
-                sums.append(number + new_table[prev_index][index])
-            # elif index > 0 and index < maxx:
+    remove_line = line.rstrip()
+    line_stripped = remove_line.split(' ')
+    lines.update({line_nr: line_stripped})
+    line_nr+=1
 
 
-print(sums)
+f.close()
+list_of_max = []
+prev_key = 0
+
+for key in lines.keys():
+    if len(lines[key]) < 2:
+        max_from_line = max(lines[key])
+        list_of_max.append(int(max_from_line))
+        prev_key = lines[key].index(max_from_line)
+    else:
+        max_from_line = max([lines[key][prev_key],lines[key][prev_key+1]])
+        prev_key = lines[key].index(max_from_line)
+        list_of_max.append(int(max_from_line))
+
+
+print(list_of_max)
+print(sum(list_of_max))
+
+
+
